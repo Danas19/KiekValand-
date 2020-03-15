@@ -30,7 +30,7 @@ function addMaybeZeroes(num) {
 	
 	document.getElementById('show-time').addEventListener('click', function() {
 		let date1 = new Date();
-		currentTimeTag.textContent = date1.getHours() + ':' + date1.getMinutes() + ':' + date1.getSeconds();
+		currentTimeTag.textContent = addMaybeZeroes(date1.getHours()) + ':' + addMaybeZeroes(date1.getMinutes()) + ':' + addMaybeZeroes(date1.getSeconds());
 		sayNumber(-1);
 	});
 
