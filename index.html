@@ -54,7 +54,7 @@ function addMaybeZeroes(num) {
 				audio1.onended = (function() {
 					console.log('<21 h/min/s after ending');
 					sayHoursMinS(s, fromWhere);
-					audio1.onended = fromWhere != 6 ? (function() { sayNumber(fromWhere + 3); console.log('po sayHoursMinS()'); }) : (function() { });
+					audio1.onended = fromWhere != 3 ? (function() { sayNumber(fromWhere + 3); console.log('po sayHoursMinS()'); }) : (function() { });
 				});
 			} else {
 				//voice from 20 to 60
@@ -70,11 +70,11 @@ function addMaybeZeroes(num) {
 						audio1.onended = function() {
 							console.log('sakyt valandu/minuciu/sekundziu(es/a/e)');
 							sayHoursMinS(s, fromWhere);
-							audio1.onended = fromWhere != 6 ? (function() { sayNumber(fromWhere + 3); }) : (function() { });
+							audio1.onended = fromWhere != 3 ? (function() { sayNumber(fromWhere + 3); }) : (function() { });
 						}
 					} else {
 						sayHoursMinS(s, fromWhere);
-						audio1.onended = fromWhere != 6 ? (function() { sayNumber(fromWhere + 3); }) : (function() { });
+						audio1.onended = fromWhere != 3 ? (function() { sayNumber(fromWhere + 3); }) : (function() { });
 					}
 				}
 			}
