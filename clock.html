@@ -1,0 +1,113 @@
+<h1 id="current-time"></h1>
+
+<div id="show-time">
+	<p>Kiek valandų?</p>
+</div>
+
+<style>
+#current-time {
+	
+}
+
+#show-time {
+	font-size: 2em;
+	font-family: monospace;
+	cursor: pointer;
+}
+</style>
+
+<script>
+let currentTimeTag = document.getElementById('current-time');
+
+function addMaybeZeroes(num) {
+	if (num < 10) {
+		return '0' + num;
+	}
+	return num;
+}
+
+	let audio1 = new Audio();
+	
+	document.getElementById('show-time').addEventListener('click', function() {
+		let date1 = new Date();
+		currentTimeTag.textContent = date1.getHours() + ':' + date1.getMinutes() + ':' + date1.getSeconds();
+		sayNumber(-1);
+	});
+
+	function sayNumber(fromWhere) {
+		if (fromWhere == -1) {
+			//say dabar yra, paskiau kitus dalykus
+			audio1.src = './audios/dabar_yra.mp3';
+			audio1.play();
+			audio1.onended = (function() { sayNumber(0); });
+		} else {
+			//dabar yra jau buvo pasakyta
+			let s = currentTimeTag.textContent.substring(fromWhere, fromWhere + 2) * 1;
+
+			if (s < 21) {
+				//voice from 0 to 20
+				
+				audio1.src = './audios/' + s + '.mp3';
+				console.log(audio1.src);
+				audio1.play();
+	console.log('< 21 h/min/s');
+				audio1.onended = (function() {
+					console.log('<21 h/min/s after ending');
+					sayHoursMinS(s, fromWhere);
+					audio1.onended = fromWhere != 6 ? (function() { sayNumber(fromWhere + 3); console.log('po sayHoursMinS()'); }) : (function() { });
+				});
+			} else {
+				//voice from 20 to 60
+				//voice 20/30/40/50/60
+				audio1.src = './audios/' + (parseInt(s / 10) * 10) + '.mp3';
+				audio1.play();
+	
+				//voice vienetus, jei yra
+				audio1.onended = function() {
+					if (s % 10 != 0) {
+						audio1.src = './audios/' + (s % 10) + '.mp3';
+						audio1.play();
+						audio1.onended = function() {
+							console.log('sakyt valandu/minuciu/sekundziu(es/a/e)');
+							sayHoursMinS(s, fromWhere);
+							audio1.onended = fromWhere != 6 ? (function() { sayNumber(fromWhere + 3); }) : (function() { });
+						}
+					} else {
+						sayHoursMinS(s, fromWhere);
+						audio1.onended = fromWhere != 6 ? (function() { sayNumber(fromWhere + 3); }) : (function() { });
+					}
+				}
+			}
+		}
+	}
+
+function sayHoursMinS(num, fromWhere) {
+	if ((num > 9 && num < 21) || num % 10 == 0) {
+		if (fromWhere == 0) {
+			audio1.src = './audios/valandu.mp3';
+		} else if (fromWhere == 3) {
+			audio1.src = './audios/minuciu.mp3';
+		} else {
+			audio1.src = './audios/sekundziu.mp3';
+		}
+	} else if (num % 10 == 1) {
+		if (fromWhere == 0) {
+			audio1.src = './audios/valanda.mp3';
+		} else if (fromWhere == 3) {
+			audio1.src = './audios/minute.mp3';
+		} else {
+			audio1.src = './audios/sekunde.mp3';
+		}
+	} else {
+		if (fromWhere == 0) {
+			audio1.src = './audios/valandos.mp3';
+		} else if (fromWhere == 3) {
+			audio1.src = './audios/minutes.mp3';
+		} else {
+			audio1.src = './audios/sekundes.mp3';
+		}
+
+	}
+	audio1.play();
+}
+</script>
